@@ -12,3 +12,4 @@ This project is a simple ecommerce shop developed to understood fundamentals abo
 ## Technologies
 
 - NextJS
+- Stitches
