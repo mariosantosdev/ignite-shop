@@ -6,6 +6,9 @@ const nextConfig = {
       { loader: 'next/font/google', options: { subsets: ['latin'] } },
     ],
   },
+  images: {
+    domains: ['files.stripe.com'],
+  },
 }
 
 module.exports = nextConfig

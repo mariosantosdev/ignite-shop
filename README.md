@@ -13,3 +13,5 @@ This project is a simple ecommerce shop developed to understood fundamentals abo
 
 - NextJS
 - Stitches
+- Keen Slider
+- Stripe
