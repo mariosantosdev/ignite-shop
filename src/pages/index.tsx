@@ -7,6 +7,7 @@ import { GetStaticProps } from 'next'
 import { stripe } from '~/services/stripe'
 import Stripe from 'stripe'
 import { formatPrice } from '~/utils/formatter'
+import Head from 'next/head'
 
 interface IHomeProducts {
   products: Array<{
@@ -27,22 +28,29 @@ export default function Home({ products }: IHomeProducts) {
   })
 
   return (
-    <HomeContainer ref={sliderRef} className="keen-slider">
-      {products.map((product) => (
-        <Product
-          key={product.id}
-          href={`/products/${product.id}`}
-          className="keen-slider__slide"
-        >
-          <Image src={product.imageUrl} width={520} height={480} alt="" />
+    <>
+      <Head>
+        <title>Ignite Shop</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+      </Head>
 
-          <footer>
-            <strong>{product.name}</strong>
-            <span>{product.formatedPrice}</span>
-          </footer>
-        </Product>
-      ))}
-    </HomeContainer>
+      <HomeContainer ref={sliderRef} className="keen-slider">
+        {products.map((product) => (
+          <Product
+            key={product.id}
+            href={`/products/${product.id}`}
+            className="keen-slider__slide"
+          >
+            <Image src={product.imageUrl} width={520} height={480} alt="" />
+
+            <footer>
+              <strong>{product.name}</strong>
+              <span>{product.formatedPrice}</span>
+            </footer>
+          </Product>
+        ))}
+      </HomeContainer>
+    </>
   )
 }
 
