@@ -1,6 +1,7 @@
 import 'keen-slider/keen-slider.min.css'
 import Image from 'next/image'
 import { useKeenSlider } from 'keen-slider/react'
+import { Handbag } from 'phosphor-react'
 
 import { HomeContainer, Product } from '~/styles/pages/home'
 import { GetStaticProps } from 'next'
@@ -8,6 +9,8 @@ import { stripe } from '~/services/stripe'
 import Stripe from 'stripe'
 import { formatPrice } from '~/utils/formatter'
 import Head from 'next/head'
+import { useCart } from 'react-use-cart'
+import Link from 'next/link'
 
 interface IHomeProducts {
   products: Array<{
@@ -20,6 +23,7 @@ interface IHomeProducts {
 }
 
 export default function Home({ products }: IHomeProducts) {
+  const { addItem } = useCart()
   const [sliderRef] = useKeenSlider({
     slides: {
       perView: 3,
@@ -36,16 +40,24 @@ export default function Home({ products }: IHomeProducts) {
 
       <HomeContainer ref={sliderRef} className="keen-slider">
         {products.map((product) => (
-          <Product
-            key={product.id}
-            href={`/products/${product.id}`}
-            className="keen-slider__slide"
-          >
-            <Image src={product.imageUrl} width={520} height={480} alt="" />
+          <Product key={product.id} className="keen-slider__slide">
+            <Link href={`/products/${product.id}`}>
+              <Image src={product.imageUrl} width={520} height={480} alt="" />
+            </Link>
 
             <footer>
-              <strong>{product.name}</strong>
-              <span>{product.formatedPrice}</span>
+              <div>
+                <strong>{product.name}</strong>
+                <span>{product.formatedPrice}</span>
+              </div>
+
+              <button
+                onClick={() =>
+                  addItem({ id: product.id, price: product.price }, 1)
+                }
+              >
+                <Handbag fontWeight="bold" size={24} />
+              </button>
             </footer>
           </Product>
         ))}
