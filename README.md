@@ -4,6 +4,7 @@ This project was built following the <a href="https://www.figma.com/file/OIJJEW2
 
 <img src="./home.png" with="1280"></img>
 <img src="./product.png" with="1280"></img>
+<img src="./cart.png" with="1280"></img>
 
 ## About Project
 
