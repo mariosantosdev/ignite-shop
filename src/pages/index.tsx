@@ -9,7 +9,7 @@ import { stripe } from '~/services/stripe'
 import Stripe from 'stripe'
 import { formatPrice } from '~/utils/formatter'
 import Head from 'next/head'
-import { useCart } from 'react-use-cart'
+import { useModalCart } from '~/context/ModalCartContext'
 import Link from 'next/link'
 
 interface IHomeProducts {
@@ -23,7 +23,7 @@ interface IHomeProducts {
 }
 
 export default function Home({ products }: IHomeProducts) {
-  const { addItem } = useCart()
+  const { addItem } = useModalCart()
   const [sliderRef] = useKeenSlider({
     slides: {
       perView: 3,
@@ -51,11 +51,7 @@ export default function Home({ products }: IHomeProducts) {
                 <span>{product.formatedPrice}</span>
               </div>
 
-              <button
-                onClick={() =>
-                  addItem({ id: product.id, price: product.price }, 1)
-                }
-              >
+              <button onClick={() => addItem({ ...product }, 1)}>
                 <Handbag fontWeight="bold" size={24} />
               </button>
             </footer>
