@@ -18,6 +18,7 @@ interface IHomeProducts {
     name: string
     imageUrl: string
     price: number
+    priceId: string
     formatedPrice: string
   }>
 }
@@ -73,6 +74,7 @@ export const getStaticProps: GetStaticProps = async (ctx) => {
       name: product.name,
       imageUrl: product.images[0],
       price: price.unit_amount,
+      priceId: price.id,
       formatedPrice: formatPrice(price.unit_amount || 0),
     }
   })

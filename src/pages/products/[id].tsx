@@ -1,9 +1,8 @@
-import axios from 'axios'
 import { GetStaticPaths, GetStaticProps } from 'next'
 import Head from 'next/head'
 import Image from 'next/image'
-import { useState } from 'react'
 import Stripe from 'stripe'
+import { useModalCart } from '~/context/ModalCartContext'
 import { stripe } from '~/services/stripe'
 import {
   ImageContainer,
@@ -18,30 +17,14 @@ interface IProductProps {
     name: string
     imageUrl: string[0]
     description: string
-    price: string
+    price: number
+    formatedPrice: string
     priceId: string
   }
 }
 
 export default function Product({ product }: IProductProps) {
-  const [isCreatingCheckoutSession, setIsCreatingCheckoutSession] =
-    useState(false)
-
-  const handleBuyProduct = async () => {
-    setIsCreatingCheckoutSession(true)
-    try {
-      const { data } = await axios.post<{ sessionUrl: string }>(
-        '/api/stripe-checkout',
-        { priceId: product.priceId },
-      )
-
-      window.location.href = data.sessionUrl
-    } catch (err) {
-      setIsCreatingCheckoutSession(false)
-      console.log(err)
-      alert('Erro ao comprar o produto')
-    }
-  }
+  const { addItem } = useModalCart()
 
   return (
     <>
@@ -57,15 +40,12 @@ export default function Product({ product }: IProductProps) {
 
         <ProductDetails>
           <h1>{product.name}</h1>
-          <span>{product.price}</span>
+          <span>{product.formatedPrice}</span>
 
           <p>{product.description}</p>
 
-          <button
-            onClick={handleBuyProduct}
-            disabled={isCreatingCheckoutSession}
-          >
-            Comprar Agora
+          <button onClick={() => addItem({ ...product }, 1)}>
+            Colocar na sacola
           </button>
         </ProductDetails>
       </ProductContainer>
@@ -102,7 +82,8 @@ export const getStaticProps: GetStaticProps<any, { id: string }> = async ({
         name: product.name,
         imageUrl: product.images[0],
         description: product.description,
-        price: formatPrice(price.unit_amount || 0),
+        price: price.unit_amount,
+        formatedPrice: formatPrice(price.unit_amount || 0),
         priceId: price.id,
       },
     },

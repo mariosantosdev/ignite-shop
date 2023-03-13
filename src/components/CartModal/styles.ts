@@ -108,6 +108,11 @@ export const Footer = styled('footer', {
 
     transition: 'filter 0.2s',
 
+    '&:disabled': {
+      opacity: 0.6,
+      cursor: 'not-allowed',
+    },
+
     '&:not(:disabled):hover': {
       filter: 'brightness(0.9)',
     },

@@ -1,6 +1,7 @@
+import axios from 'axios'
 import Image from 'next/image'
 import { X } from 'phosphor-react'
-import React from 'react'
+import React, { useState } from 'react'
 import Modal from 'react-modal'
 import { useModalCart } from '~/context/ModalCartContext'
 import { formatPrice } from '~/utils/formatter'
@@ -24,6 +25,29 @@ Modal.setAppElement('#__next')
 
 export const CartModal: React.FC<CartModalProps> = ({ isOpen, onClose }) => {
   const { items, removeItem, totalItems, cartTotal } = useModalCart()
+  const [isCreatingCheckoutSession, setIsCreatingCheckoutSession] =
+    useState(false)
+
+  const handleBuyProduct = async () => {
+    setIsCreatingCheckoutSession(true)
+    try {
+      const { data } = await axios.post<{ sessionUrl: string }>(
+        '/api/stripe-checkout',
+        {
+          products: items.map((item) => ({
+            priceId: item.priceId,
+            quantity: item.quantity,
+          })),
+        },
+      )
+
+      window.location.href = data.sessionUrl
+    } catch (err) {
+      setIsCreatingCheckoutSession(false)
+      console.log(err)
+      alert('Erro ao comprar o produto')
+    }
+  }
   return (
     <Modal
       isOpen={isOpen}
@@ -65,7 +89,12 @@ export const CartModal: React.FC<CartModalProps> = ({ isOpen, onClose }) => {
           </ItemInfo>
         </ListInfo>
 
-        <button>Finalizar compra</button>
+        <button
+          onClick={handleBuyProduct}
+          disabled={items.length <= 0 || isCreatingCheckoutSession}
+        >
+          Finalizar compra
+        </button>
       </Footer>
     </Modal>
   )
