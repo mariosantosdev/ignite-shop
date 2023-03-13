@@ -16,3 +16,5 @@ This project is a simple ecommerce shop developed to understood fundamentals abo
 - Stitches
 - Keen Slider
 - Stripe
+- React-use-cart
+- React-modal
