@@ -24,7 +24,7 @@ interface CartModalProps {
 Modal.setAppElement('#__next')
 
 export const CartModal: React.FC<CartModalProps> = ({ isOpen, onClose }) => {
-  const { items, removeItem, totalItems, cartTotal } = useModalCart()
+  const { items, removeItem, totalItems, cartTotal, emptyCart } = useModalCart()
   const [isCreatingCheckoutSession, setIsCreatingCheckoutSession] =
     useState(false)
 
@@ -41,6 +41,7 @@ export const CartModal: React.FC<CartModalProps> = ({ isOpen, onClose }) => {
         },
       )
 
+      emptyCart()
       window.location.href = data.sessionUrl
     } catch (err) {
       setIsCreatingCheckoutSession(false)
