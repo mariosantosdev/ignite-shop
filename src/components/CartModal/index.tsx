@@ -71,7 +71,9 @@ export const CartModal: React.FC<CartModalProps> = ({ isOpen, onClose }) => {
 
             <div>
               <h3>{item.name}</h3>
-              <span>{formatPrice(item.price)}</span>
+              <span>
+                {formatPrice(item.price)} - qtd. {item.quantity}
+              </span>
               <button onClick={() => removeItem(item.id)}>Remover</button>
             </div>
           </Product>
